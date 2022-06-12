@@ -1,0 +1,1 @@
+bucket_name = "cloud-student-system-website-bucket"
