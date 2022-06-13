@@ -11,9 +11,9 @@ variable "bucket_name" {
 }
 
 variable "region" {
-  description = "Selected region"
-  type        = string
-  default     = "southamerica-east1"
+  description = "Default region"
+  type = string
+  default = "southamerica-east1"
 }
 
 variable "zone" {

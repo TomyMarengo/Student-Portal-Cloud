@@ -5,9 +5,15 @@ variable "project" {
 }
 
 variable "bucket_name" {
-  description = "Bucket name"
+  description = "Files bucket name"
   type        = string
-  default     = "cloud-student-system-website-bucket"
+  default     = "cloud-student-system-files-bucket"
+}
+
+variable "storage_class" {
+  description = "Bucket storage class"
+  type = string
+  default = "NEARLINE"
 }
 
 variable "region" {
