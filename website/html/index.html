@@ -1,8 +1,37 @@
 <html>
   <head>
     <title>Plataforma de estudiantes</title>
+    <script>
+      const triggerRequest = () => {
+        fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/test_function_terraform')
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err => console.error(err));
+      };
+      const addUser = () => {
+        const username = document.querySelector('#username-input').value;
+        const email = document.querySelector('#email-input').value;
+        if(!username || !email) return;
+        fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/add_user', {
+          method: 'POST',
+          body: {
+            username,
+            email,
+          }
+        })
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err => console.error(err));
+      }
+    </script>
   </head>
   <body>
     <h1>Bienvenido a la plataforma para estudiantes</h1>
+    <button onclick="triggerRequest()">GET users</button>
+    <div style="display: flex; flex-direction: column; margin-top: 20px; width: 25%;">
+      <input id="username-input" type="text" placeholder="username" style="margin-bottom: 10px;"/>
+      <input id="email-input" type="email" placeholder="email" style="margin-bottom: 10px;"/>
+      <button type="button" onclick="addUser()" style="width: 85px;">Add user</button>
+    </div>
   </body>
 </html>

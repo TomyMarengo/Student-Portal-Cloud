@@ -1,11 +1,11 @@
 data "archive_file" "source" {
   type = "zip"
-  source_dir = "../../../functions/test_function_terraform"
-  output_path = "/tmp/test_function_terraform.zip"
+  source_dir = "../../../functions/post_user"
+  output_path = "/tmp/post_user.zip"
 }
 
 resource "google_storage_bucket" "functions_bucket" {
-  name = "${var.project}-test-function-terraform"
+  name = "${var.project}-post-user"
   location = var.region
 }
 
@@ -15,13 +15,13 @@ resource "google_storage_bucket_object" "function_zip" {
   source = data.archive_file.source.output_path
 }
 
-resource "google_cloudfunctions_function" "test_function_terraform" {
-  name  = "test_function_terraform"
-  description = "Test function created from Terraform file"
+resource "google_cloudfunctions_function" "post_user" {
+  name  = "post-user"
+  description = "Cloud function to create a new user"
   runtime = "nodejs16"
   available_memory_mb = 128
   trigger_http = true
-  entry_point = "testFunction"
+  entry_point = "postUser"
   max_instances = 10
   source_archive_bucket = google_storage_bucket.functions_bucket.name
   source_archive_object = "${data.archive_file.source.output_md5}.zip"
@@ -33,7 +33,7 @@ resource "google_cloudfunctions_function" "test_function_terraform" {
 resource "google_cloudfunctions_function_iam_member" "invoker" {
   project = "cloud-student-system"
   region  = "southamerica-east1"
-  cloud_function = google_cloudfunctions_function.test_function_terraform.name
+  cloud_function = google_cloudfunctions_function.post_user.name
   role = "roles/cloudfunctions.invoker"
   member = "allUsers"
 }
