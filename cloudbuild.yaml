@@ -1,13 +1,12 @@
-jobs:
   defaults:
     run:
-      working-directory: "./website"
-    steps:
-    - name: node:16.15.0  
-      entrypoint: npm
-      args: ["install"]
-    - name: node:16.15.0
-      entrypoint: npm
-      args: ["run", "build"]
-    - name: "gcr.io/cloud-builders/gsutil"
-      args: ["-m", "cp", "-r", "build/*", "gs://cloud-student-system-frontend-bucket"]
+      working-directory: website
+  steps:
+  - name: node:16.15.0  
+    entrypoint: npm
+    args: ["install"]
+  - name: node:16.15.0
+    entrypoint: npm
+    args: ["run", "build"]
+  - name: "gcr.io/cloud-builders/gsutil"
+    args: ["-m", "cp", "-r", "build/*", "gs://cloud-student-system-frontend-bucket"]
