@@ -1,4 +1,7 @@
 steps:
+- name: "change dir"
+  command: ["/bin/sh", "-c"]
+  args: ["cd website"]
 - name: node:latest
   entrypoint: npm
   args: ["install"]
