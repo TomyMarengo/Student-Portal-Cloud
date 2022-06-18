@@ -67,5 +67,5 @@ variable "cloud_build_filename" {
 variable "cloud_build_repo_name" {
   description = "Cloud build default repository url"
   type        = string
-  default     = "https://github.com/edamm21/TP-Cloud"
+  default     = "https://github.com/edamm21/TP-Cloud.git"
 }
