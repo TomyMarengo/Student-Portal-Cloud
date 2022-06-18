@@ -1,4 +1,6 @@
-const {Pool} = require('pg')
+const {Pool} = require('pg');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const credentials = {
   "host":"10.0.0.3",
@@ -22,24 +24,35 @@ exports.postUser = async (req, res) => {
   pool.connect((error, client, release) => {
     if(error) {
       res.status(500).json({msg: 'Error getting pg client'})
-      return;
-    }
-    const {username, email} = req.body;
-    let response;
-    let code;
-    const query = `INSERT INTO users(username, email) VALUES ('${username}', '${email}');`;
-    client.query(query)
-    .then(res => {
-      response = 'User added correctly';
-      code = 200;
-    })
-    .catch(err => {
-      response = err;
-      code = 422;
-    })
-    .finally(() => {
       client.release();
       res.status(code).json({msg: response});
+      return;
+    }
+    const {fullName, email, password} = req.body;
+    let response;
+    let code;
+    bcrypt.hash(password, 1, (err, hash) => {
+      if(err) {
+        response = err;
+        code = 500;
+        return;
+      }
+      console.log(hash);
+      const query = `INSERT INTO users(full_name, email, password) VALUES ('${fullName}', '${email}', '${hash}');`;
+      console.log(query);
+      client.query(query)
+      .then(res => {
+        response = 'User added correctly';
+        code = 200;
+      })
+      .catch(err => {
+        response = err;
+        code = 422;
+      })
+      .finally(() => {
+        client.release();
+        res.status(code).json({msg: response});
+      });
     });
   });
 }
