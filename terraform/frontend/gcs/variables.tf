@@ -61,7 +61,7 @@ variable "cloud_build_name" {
 variable "cloud_build_filename" {
   description = "Cloud build default filename"
   type        = string
-  default     = "cloudbuild.yaml"
+  default     = "website/cloudbuild.yaml"
 }
 
 variable "cloud_build_repo_name" {

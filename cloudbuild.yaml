@@ -1,7 +1,4 @@
 steps:
-- name: shell
-  entrypoint: /bin/sh
-  args: ["cd", "website"]
 - name: node:16.15.0  
   entrypoint: npm
   args: ["install"]
