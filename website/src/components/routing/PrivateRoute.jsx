@@ -10,8 +10,6 @@ const PrivateRoute = ({
   const isLoggedIn = () => localStorage.getItem('cloud-token') !== undefined &&
                            localStorage.getItem('cloud-token') !== null;
 
-  console.log(isLoggedIn())
-
   return (
     <Route
       {...rest}

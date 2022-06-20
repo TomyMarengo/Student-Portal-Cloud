@@ -19,8 +19,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Switch>
-        <PrivateRoute exact path={'/subjects'} component={<Subjects/>}/>
-        <PrivateRoute exact path={'/'} component={<App/>}/>
+        <PrivateRoute exact path={'/'} component={<Subjects/>}/>
         <Route exact path={'/login'} component={Login}/>
         <Route exact path={'/register'} component={Register}/>
         <Route component={NotFound}/>

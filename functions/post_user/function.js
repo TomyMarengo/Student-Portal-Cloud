@@ -12,6 +12,8 @@ const credentials = {
 
 const pool = new Pool(credentials);
 
+const JWT_KEY = 'cloud-tp-key'; // exportar a process.env
+
 exports.postUser = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', '*');
@@ -37,12 +39,11 @@ exports.postUser = async (req, res) => {
         code = 500;
         return;
       }
-      console.log(hash);
-      const query = `INSERT INTO users(full_name, email, password) VALUES ('${fullName}', '${email}', '${hash}');`;
-      console.log(query);
+      const query = `INSERT INTO users(full_name, email, password) VALUES ('${fullName}', '${email}', '${hash}') RETURNING id;`;
       client.query(query)
       .then(res => {
-        response = 'User added correctly';
+        const id = res.rows[0].id;
+        response = jwt.sign({id, email, fullName}, JWT_KEY);
         code = 200;
       })
       .catch(err => {

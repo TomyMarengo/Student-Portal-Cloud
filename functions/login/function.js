@@ -10,6 +10,8 @@ const credentials = {
   "password":"testing1234"
 }
 
+const JWT_KEY = 'cloud-tp-key'; // exportar a process.env
+
 const pool = new Pool(credentials);
 
 exports.login = async (req, res) => {
@@ -27,39 +29,40 @@ exports.login = async (req, res) => {
       res.status(500).json({msg: 'Error getting pg client'})
       return;
     }
-    const {email, password} = req.body;
+    const email = req.body.email;
+    const userPassword = req.body.password;
     let response;
     let code;
     const query = `SELECT id, full_name, password FROM users WHERE email='${email}';`;
     client.query(query)
-    .then(async res => {
-      if(res.rowCount == 0) {
-        response = 'Las credenciales de acceso son incorrectas';
-        code = 401;
-      } else {
-        const {id, full_name, db_password} = res.rows[0];
-        const samePasswords = await bcrypt.compare(password, db_password);
-        if(!samePasswords) {
+      .then(async res => {
+        if(res.rowCount == 0) {
           response = 'Las credenciales de acceso son incorrectas';
           code = 401;
         } else {
-          const token = jwt.sign({
-            id,
-            email,
-            fullName: full_name
-          });
-          response = token;
-          code = 200;
+          const {id, full_name, password} = res.rows[0];
+          const samePasswords = await bcrypt.compare(userPassword, password);
+          if(!samePasswords) {
+            response = 'Las credenciales de acceso son incorrectas';
+            code = 401;
+          } else {
+            response = jwt.sign({
+              id,
+              email,
+              fullName: full_name
+            }, JWT_KEY);
+            code = 200;
+          }
         }
-      }
-    })
-    .catch(err => {
-      response = err;
-      code = 422;
-    })
-    .finally(() => {
-      client.release();
-      res.status(code).json({msg: response});
-    });
+      })
+      .catch(err => {
+        console.error(err);
+        response = err;
+        code = 422;
+      })
+      .finally(() => {
+        client.release();
+        res.status(code).json({msg: response});
+      });
   });
 }
