@@ -89,7 +89,6 @@ resource "google_compute_global_forwarding_rule" "frontend_forwarding_rule" {
 }
 
 ### HTTP-to-HTTPS redirect ###
-
 resource "google_compute_url_map" "http-redirect" {
   name = "http-redirect"
 	project = var.project

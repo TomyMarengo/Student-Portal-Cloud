@@ -85,6 +85,7 @@ module "frontend" {
 	project = var.project
 	location = var.location
 	frontend_domain = var.frontend_domain
+	repo_suffix = var.repo_suffix
 }
 
 /* CLOUD FUNCTIONS */
@@ -107,7 +108,7 @@ module "functions" {
 }
 
 /* DNS */
-module "dns" {
+/*module "dns" {
 	depends_on = [
 		google_project_service.dns,
 		module.frontend
@@ -116,5 +117,5 @@ module "dns" {
 	frontend_ip = module.frontend.frontend_ip
 	frontend_domain = var.frontend_domain
 	backend_ip = module.functions.backend_ip
-	backend_domain = var.backend_domain
-}
+	backend_domain = var.api_domain
+}*/

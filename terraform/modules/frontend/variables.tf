@@ -1,6 +1,7 @@
 variable "project" {}
 variable "frontend_domain" {}
 variable "location" {}
+variable "repo_suffix" {}
 
 variable "acls" {
   description = "Bucket ACL rules"
@@ -42,10 +43,4 @@ variable "cloud_build_filename" {
   description = "Cloud build default filename"
   type        = string
   default     = "website/cloudbuild.yaml"
-}
-
-variable "cloud_build_repo_name" {
-  description = "Cloud build default repository url"
-  type        = string
-  default     = "https://github.com/edamm21/TP-Cloud"
 }
