@@ -1,13 +1,16 @@
 const {Pool} = require('pg')
 const jwt = require('jsonwebtoken');
 
+const dbSocketAddr = process.env.DB_HOST.split(':');
+
 const credentials = {
-  "host":"10.0.0.3",
-  "database":"postgres",
-  "port":"5432",
-  "user":"postgres",
-  "password":"testing1234"
+  "user": process.env.DB_USER,
+  "password": process.env.DB_PASS, 
+  "database": process.env.DB_NAME, 
+  "host": dbSocketAddr[0], 
+  "port": dbSocketAddr[1]
 }
+
 
 const pool = new Pool(credentials);
 
