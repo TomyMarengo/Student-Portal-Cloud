@@ -108,7 +108,7 @@ module "functions" {
 }
 
 /* DNS */
-/*module "dns" {
+module "dns" {
 	depends_on = [
 		google_project_service.dns,
 		module.frontend
@@ -118,4 +118,4 @@ module "functions" {
 	frontend_domain = var.frontend_domain
 	backend_ip = module.functions.backend_ip
 	backend_domain = var.api_domain
-}*/
+}

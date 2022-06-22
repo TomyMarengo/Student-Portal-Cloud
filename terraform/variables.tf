@@ -1,7 +1,7 @@
 variable "project" {
 	description = "Project name"
 	type = string
-	default = "tpcloud2-354021"
+	default = "cloud-student-system"
 }
 
 variable "location" {
@@ -25,19 +25,19 @@ variable "zone" {
 variable "api_domain" {
 	description = "API Domain"
 	type = string
-	default = "api.tomasmarengo.com"
+	default = "api.tpcloud.com.ar"
 }
 
 variable "frontend_domain" {
 	description = "Frontend Domain"
 	type = string
-	default = "tomasmarengo.com"
+	default = "tpcloud.com.ar"
 }
 
 variable "domain" {
 	description = "Domain"
 	type = string
-	default = "tomasmarengo"
+	default = "tpcloud"
 }
 
 variable "repo_suffix" {
