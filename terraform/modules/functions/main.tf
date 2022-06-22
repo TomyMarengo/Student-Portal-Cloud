@@ -28,7 +28,6 @@ resource "google_cloudfunctions_function" "function" {
 	project = var.project
   runtime     = "nodejs16"
 	region = var.region
-	service_account_email = var.service_account.email
 
   available_memory_mb   = 128
   trigger_http          = true

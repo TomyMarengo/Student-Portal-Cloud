@@ -6,4 +6,3 @@ variable "sac" {}
 variable "user" {}
 variable "domain" {}
 variable "frontend_ip" {}
-variable "service_account" {}
