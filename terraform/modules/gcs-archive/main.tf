@@ -29,11 +29,12 @@ resource "google_storage_bucket" "archives" {
 	}
 
 	versioning {
-		enable = true
+		enabled = true
 	}
 }
 
 resource "google_service_account" "sa" {
+	project = var.project
   account_id   = "to-admin-archives"
   display_name = "A service account that can administrate archives bucket"
 }
