@@ -88,13 +88,20 @@ module "frontend" {
 	repo_suffix = var.repo_suffix
 }
 
+/* GCS ARCHIVES */
+module "gcs-archive" {
+	source = "./modules/gcs-archive"
+	project = var.project
+}
+
 /* CLOUD FUNCTIONS */
 module "functions" {
 	depends_on = [
 		google_project_service.cf,
 		module.connector,
 		module.sql,
-		module.frontend
+		module.frontend,
+		module.gcs-archive
 	]
 	source = "./modules/functions"
 	project = var.project
@@ -105,17 +112,6 @@ module "functions" {
 	user = module.sql.user
 	sac = module.connector.sac
 	frontend_ip = module.frontend.frontend_ip
+	service_account =  module.gcs-archive.service_account
 }
 
-/* DNS */
-module "dns" {
-	depends_on = [
-		google_project_service.dns,
-		module.frontend
-	]
-	source = "./modules/dns"
-	frontend_ip = module.frontend.frontend_ip
-	frontend_domain = var.frontend_domain
-	backend_ip = module.functions.backend_ip
-	backend_domain = var.api_domain
-}
