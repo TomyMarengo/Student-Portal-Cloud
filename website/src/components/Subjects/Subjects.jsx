@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
 import { useEffect } from 'react';
 import {CircularProgress} from "@mui/material";
-import UserSubject from "./UserSubject";
 import SubjectsTable from "./SubjectsTable";
 import UserSubjectsGrid from "./UserSubjectsGrid";
 
-const Subjects = ({
-
-}) => {
+const Subjects = () => {
 
   const [loading, setLoading] = useState(true);
   const [allSubjects, setAllSubjects] = useState(null);
@@ -31,6 +28,7 @@ const Subjects = ({
       })
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
+  //eslint-disable-next-line
   }, []);
 
   const getAllSubjects = () => fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/get-all-subjects', getOptions);
@@ -57,20 +55,36 @@ const Subjects = ({
     <div>
       {
         loading &&
-        <CircularProgress size={50} color={'primary'}/>
-      }
-      {
-        !loading && userSubjects?.length > 0 &&
-        <div style={{margin: '20px 10px'}}>
-          <h3>Materias en las que usted está inscripto:</h3>
-          <UserSubjectsGrid subjects={userSubjects} deleteSubject={deleteSubject}/>
+        <div style={{width: 'min-content', margin: '20px auto'}}>
+          <CircularProgress size={50} color={'primary'}/>
         </div>
       }
       {
-        !loading && allSubjects?.length > 0 &&
+        !loading &&
+        <div style={{margin: '20px 10px'}}>
+          <h3>Materias en las que usted está inscripto:</h3>
+          {
+            userSubjects?.length > 0 &&
+            <UserSubjectsGrid subjects={userSubjects} deleteSubject={deleteSubject}/>
+          }
+          {
+            userSubjects?.length === 0 &&
+            <p>Usted no está inscripto en ninguna materia aún.</p>
+          }
+        </div>
+      }
+      {
+        !loading &&
         <div style={{margin: '20px 10px'}}>
           <h3>Todas las materias:</h3>
-          <SubjectsTable subjects={allSubjects} addSubject={addSubject} deleteSubject={deleteSubject}/>
+          {
+            allSubjects?.length > 0 &&
+            <SubjectsTable subjects={allSubjects} addSubject={addSubject} deleteSubject={deleteSubject}/>
+          }
+          {
+              allSubjects?.length === 0 &&
+              <p>No hay materias disponibles.</p>
+          }
         </div>
       }
     </div>
