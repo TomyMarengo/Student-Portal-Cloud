@@ -30,17 +30,17 @@ exports.addUserFile = async (req, res) => {
   }
 
   const {id} = jwt.decode(userToken);
-  console.log(req.body.file);
-  const filePath = `${id}/${req.body.filename}`;
-  console.log(filePath);
-  fs.writeFile(filePath, req.body.file, async (err) =>  {
+  const {filename, data} = req.body;
+  const filePath = `${id}/${filename}`;
+  const dataLength = Object.keys(data).length;
+  const dataArray = new Uint8Array(dataLength);
+  for(let i = 0 ; i < dataLength ; i++) {
+    dataArray[i] = Object.values(data)[i];
+  }
+  fs.writeFile(filePath, dataArray, async (err) =>  {
     if(err) return res.status(500).json({msg: 'File upload error. Try again later.'});
     const bucketName = 'cloud-student-system-files';
-    await storage.bucket(bucketName).upload(filePath, {
-      destination: filePath,
-    });
-
-    res.status(200).json({msg: `${req.body.filename} uploaded to ${bucketName}`});
+    await storage.bucket(bucketName).upload(filePath, { destination: filePath });
+    return res.status(200).json({msg: `${filename} uploaded to ${bucketName}`});
   });
-
 }
