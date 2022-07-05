@@ -9,4 +9,4 @@ steps:
   args: ["run", "build"]
 - name: "gcr.io/cloud-builders/gsutil"
   dir: website
-  args: ["-m", "cp", "-r", "build/*", "gs://tpcloud.com.ar"]
+  args: ["-m", "cp", "-r", "build/*", "gs://tp-cloud.xyz"]

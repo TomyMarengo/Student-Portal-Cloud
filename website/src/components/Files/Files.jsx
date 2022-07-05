@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
 import UserFilesTable from "./UserFilesTable";
 import UploadFileComponent from "./UploadFileComponent";
+import {REQUESTS_URL} from "../../utils/endpoints";
 
 const Files = () => {
 
@@ -16,10 +17,10 @@ const Files = () => {
   }
 
   useEffect(() => {
-    /*fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/getUserFiles', getOptions)
+    fetch(REQUESTS_URL.GET_USER_FILES_URL, getOptions)
       .then(res => console.log(res))
       .catch(err => console.error(err))
-      .finally(() => setLoading(false));*/
+      .finally(() => setLoading(false));
   }, []);
 
   return (

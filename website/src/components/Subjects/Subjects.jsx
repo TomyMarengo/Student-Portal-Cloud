@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import {CircularProgress} from "@mui/material";
 import SubjectsTable from "./SubjectsTable";
 import UserSubjectsGrid from "./UserSubjectsGrid";
+import {REQUESTS_URL} from "../../utils/endpoints";
 
 const Subjects = () => {
 
@@ -31,9 +32,9 @@ const Subjects = () => {
   //eslint-disable-next-line
   }, []);
 
-  const getAllSubjects = () => fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/get-all-subjects', getOptions);
+  const getAllSubjects = () => fetch(REQUESTS_URL.GET_ALL_SUBJECTS_URL, getOptions);
 
-  const getUserSubjects = () => fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/get-user-subjects', getOptions);
+  const getUserSubjects = () => fetch(REQUESTS_URL.GET_USER_SUBJECTS_URL, getOptions);
 
   const addSubject = subject => setUserSubjects([...userSubjects, subject])
 

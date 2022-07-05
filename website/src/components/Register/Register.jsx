@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, Button, CircularProgress, Snackbar, TextField} from "@mui/material";
 import {useHistory} from "react-router-dom";
+import {REQUESTS_URL} from "../../utils/endpoints";
 
 const Register = ({
 
@@ -41,7 +42,7 @@ const Register = ({
     }
     setError(false);
     setLoading(true);
-    fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/post-user', {
+    fetch(REQUESTS_URL.POST_USER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

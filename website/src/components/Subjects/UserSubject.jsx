@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Button, Card, CardActions, CardContent, CircularProgress, Typography} from "@mui/material";
+import {REQUESTS_URL} from "../../utils/endpoints";
 
 const UserSubject = ({
   subject,
@@ -10,7 +11,7 @@ const UserSubject = ({
 
   const deleteUserSubject = () => {
     setLoading(true);
-    fetch(`https://southamerica-east1-cloud-student-system.cloudfunctions.net/delete-user-subject?subjectId=${subject.id}`, {
+    fetch(`${REQUESTS_URL.DELETE_USER_SUBJECT_URL}?subjectId=${subject.id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('cloud-token')}` }
     })

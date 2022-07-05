@@ -12,6 +12,7 @@ import {
   Tooltip
 } from "@mui/material";
 import {Add, Delete} from "@mui/icons-material";
+import {REQUESTS_URL} from "../../utils/endpoints";
 
 const SubjectsTable = ({
   subjects,
@@ -23,7 +24,7 @@ const SubjectsTable = ({
 
   const addUserSubject = (subject, subjectIndex) => {
     setLoadingState(true, subjectIndex);
-    fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/post-user-subject', {
+    fetch(REQUESTS_URL.POST_USER_SUBJECT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('cloud-token')}` },
       body: JSON.stringify({ subjectId: subject.id })
@@ -38,7 +39,7 @@ const SubjectsTable = ({
 
   const deleteUserSubject = (subject, subjectIndex) => {
     setLoadingState(true, subjectIndex);
-    fetch(`https://southamerica-east1-cloud-student-system.cloudfunctions.net/delete-user-subject?subjectId=${subject.id}`, {
+    fetch(`${REQUESTS_URL.DELETE_USER_SUBJECT_URL}?subjectId=${subject.id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('cloud-token')}` }
     })

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Button, CircularProgress, Input} from "@mui/material";
+import {REQUESTS_URL} from "../../utils/endpoints";
 
 const UploadFileComponent = ({
 
@@ -8,14 +9,12 @@ const UploadFileComponent = ({
     const [uploadLoading, setUploadLoading] = useState(false);
     const [error, setError] = useState(null);
     const [file, setFile] = useState(null);
-
-    console.log()
+    const [fileData, setFileData] = useState(null);
 
     const handleFileInput = evt => {
       setError(null);
       const file = evt.target.files[0];
       const fileType = file.type;
-      console.log(fileType, error);
       if(fileType !== 'application/pdf') {
         setError('El archivo debe ser PDF.');
         return;
@@ -35,9 +34,7 @@ const UploadFileComponent = ({
 
     const uploadFile = () => {
       setUploadLoading(true);
-      //const formData = new FormData();
-      //formData.append('file', file);
-      fetch('https://southamerica-east1-cloud-student-system.cloudfunctions.net/add-user-file ', {
+      fetch(REQUESTS_URL.ADD_USER_FILE_URL, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('cloud-token')}`,
@@ -78,5 +75,19 @@ const UploadFileComponent = ({
         </div>
     );
 }
+/*
+
+const bucket = storage.bucket('cloud-student-system-files');
+  const blob = bucket.file(req.body.file.originalname);
+  const blobStream = blob.createWriteStream();
+  blobStream.on('error', err => {
+    console.error(err);
+    return res.status(500).json({msg: err});
+  });
+  blobStream.on('finish', () => {
+    return res.status(200).json({msg: `https://storage.googleapis.com/${bucket.name}/${blob.name}`});
+  });
+  blobStream.end(req.body.file.buffer);
+ */
 
 export default UploadFileComponent;
