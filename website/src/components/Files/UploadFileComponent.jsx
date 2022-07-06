@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Button, CircularProgress, Input} from "@mui/material";
 import {REQUESTS_URL} from "../../utils/endpoints";
+import {supportedTypes} from "../../utils/supportedFileTypes";
 
 const UploadFileComponent = ({
 
@@ -15,32 +16,23 @@ const UploadFileComponent = ({
       setError(null);
       const file = evt.target.files[0];
       const fileType = file.type;
-      if(fileType !== 'application/pdf') {
-        setError('El archivo debe ser PDF.');
+      if(!supportedTypes.includes(fileType)) {
+        setError('El tipo de archivo no está soportado. Debe ser PNG, JPG, JPEG o PDF.');
         return;
       }
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onloadend = (e) => {
-        if (e.target.readyState === FileReader.DONE) {
-          setFile({
-            filename: file.name,
-            data: new Uint8Array(reader.result),
-            type: fileType
-          });
-        }
-      }
+      setFile(file);
     }
 
     const uploadFile = () => {
       setUploadLoading(true);
+      const formData = new FormData();
+      formData.append('file', file);
       fetch(REQUESTS_URL.ADD_USER_FILE_URL, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('cloud-token')}`,
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(file),
+        body: formData,
       })
         .then(res => res.json())
         .then(res => console.log(res))
