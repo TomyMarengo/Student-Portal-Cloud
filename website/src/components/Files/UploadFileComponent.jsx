@@ -4,7 +4,7 @@ import {REQUESTS_URL} from "../../utils/endpoints";
 import {supportedTypes} from "../../utils/supportedFileTypes";
 
 const UploadFileComponent = ({
-
+  addNewFile
 }) => {
 
     const [uploadLoading, setUploadLoading] = useState(false);
@@ -35,7 +35,7 @@ const UploadFileComponent = ({
         body: formData,
       })
         .then(res => res.json())
-        .then(res => console.log(res))
+        .then(res => addNewFile(res.msg[0]))
         .catch(err => console.error(err))
         .finally(() => setUploadLoading(false));
     }
