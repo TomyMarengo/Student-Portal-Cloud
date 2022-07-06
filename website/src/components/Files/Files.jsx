@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {CircularProgress} from "@mui/material";
+import {Alert, CircularProgress, Snackbar} from "@mui/material";
 import UserFilesTable from "./UserFilesTable";
 import UploadFileComponent from "./UploadFileComponent";
 import {REQUESTS_URL} from "../../utils/endpoints";
@@ -8,6 +8,7 @@ const Files = () => {
 
   const [userFiles, setUserFiles] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [duplicate, setDuplicate] = useState(null);
 
   const getOptions = {
     headers: {
@@ -33,7 +34,7 @@ const Files = () => {
       return;
     }
     setUserFiles(files.map(f => {
-      const originalFileName = f.name.split('-')[1];
+      const originalFileName = f.name.split('#')[1];
       return {
         id: originalFileName,
         name: originalFileName.split('.')[0],
@@ -44,7 +45,11 @@ const Files = () => {
   }
 
   const parseFile = file => {
-    const originalFileName = file.name.split('-')[1];
+    const originalFileName = file.name.split('#')[1];
+    if(userFiles.find(f => f.id === originalFileName)) {
+      setDuplicate(originalFileName);
+      return;
+    }
     setUserFiles([...userFiles, {
       id: originalFileName,
       name: originalFileName.split('.')[0],
@@ -54,6 +59,8 @@ const Files = () => {
   }
 
   const addNewFile = file => parseFile(file)
+
+  const handleCloseSnackbar = () => setDuplicate(null);
 
   return (
     <div>
@@ -77,6 +84,9 @@ const Files = () => {
           <UploadFileComponent addNewFile={addNewFile}/>
         </div>
       }
+      <Snackbar open={duplicate !== null} autoHideDuration={4000} onClose={handleCloseSnackbar}>
+        <Alert severity={'info'}>{`El archivo ${duplicate} se sobreescribió exitosamente.`}</Alert>
+      </Snackbar>
     </div>
   );
 }

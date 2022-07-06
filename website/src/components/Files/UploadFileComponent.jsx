@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, CircularProgress, Input} from "@mui/material";
+import {Alert, Button, CircularProgress, Input, Snackbar} from "@mui/material";
 import {REQUESTS_URL} from "../../utils/endpoints";
 import {supportedTypes} from "../../utils/supportedFileTypes";
 
@@ -35,17 +35,26 @@ const UploadFileComponent = ({
         body: formData,
       })
         .then(res => res.json())
-        .then(res => addNewFile(res.msg[0]))
+        .then(res => {
+          clearInput();
+          addNewFile(res.msg[0]);
+        })
         .catch(err => console.error(err))
         .finally(() => setUploadLoading(false));
     }
 
+    const clearInput = () => {
+      setFile(null);
+      document.getElementById('file-input').value = null;
+    }
+
+    const handleCloseSnackbar = () => setError(null);
+
     return (
         <div style={{display: 'flex', flexDirection: 'column', width: '20%', minWidth: 300}}>
-            {
-                error !== null &&
-                <p style={{color: 'red'}}>{error}</p>
-            }
+            <Snackbar open={error !== null} autoHideDuration={4000} onClose={handleCloseSnackbar}>
+              <Alert severity={'error'}>{error}</Alert>
+            </Snackbar>
             <Input type={'file'}
                    id={'file-input'}
                    placeholder={'Suba sus archivos aquí'}
@@ -53,7 +62,7 @@ const UploadFileComponent = ({
                    onChange={handleFileInput}
                    error={error !== null}
             />
-            <Button disabled={!file || !!error}
+            <Button disabled={!file || !!error || uploadLoading}
                     style={{width: '50%', margin: '15px auto'}}
                     onClick={uploadFile}
                     variant={'contained'}
@@ -67,19 +76,5 @@ const UploadFileComponent = ({
         </div>
     );
 }
-/*
-
-const bucket = storage.bucket('cloud-student-system-files');
-  const blob = bucket.file(req.body.file.originalname);
-  const blobStream = blob.createWriteStream();
-  blobStream.on('error', err => {
-    console.error(err);
-    return res.status(500).json({msg: err});
-  });
-  blobStream.on('finish', () => {
-    return res.status(200).json({msg: `https://storage.googleapis.com/${bucket.name}/${blob.name}`});
-  });
-  blobStream.end(req.body.file.buffer);
- */
 
 export default UploadFileComponent;

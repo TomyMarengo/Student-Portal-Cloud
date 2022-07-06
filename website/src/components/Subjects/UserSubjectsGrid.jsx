@@ -10,7 +10,7 @@ const UserSubjectsGrid = ({
     <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
       {
         subjects.map(subject => (
-          <UserSubject subject={subject} deleteSubject={deleteSubject} />
+          <UserSubject key={subject.id} subject={subject} deleteSubject={deleteSubject} />
         ))
       }
     </div>

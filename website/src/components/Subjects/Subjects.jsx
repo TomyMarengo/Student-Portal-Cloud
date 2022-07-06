@@ -8,6 +8,7 @@ import {REQUESTS_URL} from "../../utils/endpoints";
 const Subjects = () => {
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [allSubjects, setAllSubjects] = useState(null);
   const [userSubjects, setUserSubjects] = useState(null);
 
@@ -27,7 +28,10 @@ const Subjects = () => {
         setAllSubjects(res[0].msg);
         setUserSubjects(res[1].msg);
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        setError(true);
+        console.error(err);
+      })
       .finally(() => setLoading(false));
   //eslint-disable-next-line
   }, []);
@@ -61,7 +65,7 @@ const Subjects = () => {
         </div>
       }
       {
-        !loading &&
+        !loading && !error &&
         <div style={{margin: '20px 10px'}}>
           <h3>Materias en las que usted está inscripto:</h3>
           {
@@ -75,7 +79,7 @@ const Subjects = () => {
         </div>
       }
       {
-        !loading &&
+        !loading && !error &&
         <div style={{margin: '20px 10px'}}>
           <h3>Todas las materias:</h3>
           {
@@ -87,6 +91,10 @@ const Subjects = () => {
               <p>No hay materias disponibles.</p>
           }
         </div>
+      }
+      {
+        !loading && error &&
+        <h4>Hubo un error buscando sus materias. Por favor intente de nuevo más tarde.</h4>
       }
     </div>
   );
